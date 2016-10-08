@@ -18,6 +18,7 @@ import com.wdullaer.materialdatetimepicker.time.TimePickerDialog;
 import java.util.Calendar;
 
 public class MainActivity extends AppCompatActivity implements
+    View.OnClickListener,
     TimePickerDialog.OnTimeSetListener,
     DatePickerDialog.OnDateSetListener
 {
@@ -36,8 +37,10 @@ public class MainActivity extends AppCompatActivity implements
     private CheckBox titleDate;
     private CheckBox showYearFirst;
     private CheckBox enableSeconds;
+    private CheckBox enableMinutes;
     private CheckBox limitTimes;
     private CheckBox limitDates;
+    private CheckBox disableDates;
     private CheckBox highlightDates;
 
     @Override
@@ -63,13 +66,19 @@ public class MainActivity extends AppCompatActivity implements
         titleDate = (CheckBox) findViewById(R.id.title_date);
         showYearFirst = (CheckBox) findViewById(R.id.show_year_first);
         enableSeconds = (CheckBox) findViewById(R.id.enable_seconds);
+        enableMinutes = (CheckBox) findViewById(R.id.enable_minutes);
         limitTimes = (CheckBox) findViewById(R.id.limit_times);
         limitDates = (CheckBox) findViewById(R.id.limit_dates);
+        disableDates = (CheckBox) findViewById(R.id.disable_dates);
         highlightDates = (CheckBox) findViewById(R.id.highlight_dates);
 
-        // check if picker mode is specified in Style.xml
+        // Check if picker mode is specified in Style.xml
         modeDarkTime.setChecked(Utils.isDarkTheme(this, modeDarkTime.isChecked()));
         modeDarkDate.setChecked(Utils.isDarkTheme(this, modeDarkDate.isChecked()));
+
+        // Ensure a consistent state between enableSeconds and enableMinutes
+        enableMinutes.setOnClickListener(this);
+        enableSeconds.setOnClickListener(this);
 
         // Show a timepicker when the timeButton is clicked
         timeButton.setOnClickListener(new View.OnClickListener() {
@@ -86,6 +95,7 @@ public class MainActivity extends AppCompatActivity implements
                 tpd.vibrate(vibrateTime.isChecked());
                 tpd.dismissOnPause(dismissTime.isChecked());
                 tpd.enableSeconds(enableSeconds.isChecked());
+                tpd.enableMinutes(enableMinutes.isChecked());
                 if (modeCustomAccentTime.isChecked()) {
                     tpd.setAccentColor(Color.parseColor("#9C27B0"));
                 }
@@ -128,7 +138,7 @@ public class MainActivity extends AppCompatActivity implements
                 }
                 if (limitDates.isChecked()) {
                     Calendar[] dates = new Calendar[13];
-                    for(int i = -6; i <= 6; i++) {
+                    for (int i = -6; i <= 6; i++) {
                         Calendar date = Calendar.getInstance();
                         date.add(Calendar.MONTH, i);
                         dates[i+6] = date;
@@ -137,16 +147,31 @@ public class MainActivity extends AppCompatActivity implements
                 }
                 if (highlightDates.isChecked()) {
                     Calendar[] dates = new Calendar[13];
-                    for(int i = -6; i <= 6; i++) {
+                    for (int i = -6; i <= 6; i++) {
                         Calendar date = Calendar.getInstance();
                         date.add(Calendar.WEEK_OF_YEAR, i);
                         dates[i+6] = date;
                     }
                     dpd.setHighlightedDays(dates);
                 }
+                if (disableDates.isChecked()) {
+                    Calendar[] dates = new Calendar[3];
+                    for (int i = -1; i <= 1; i++) {
+                        Calendar date = Calendar.getInstance();
+                        date.add(Calendar.DAY_OF_MONTH, i);
+                        dates[i+1] = date;
+                    }
+                    dpd.setDisabledDays(dates);
+                }
                 dpd.show(getFragmentManager(), "Datepickerdialog");
             }
         });
+    }
+
+    @Override
+    public void onClick(View view) {
+        if (enableSeconds.isChecked() && view.getId() == R.id.enable_seconds) enableMinutes.setChecked(true);
+        if (!enableMinutes.isChecked() && view.getId() == R.id.enable_minutes) enableSeconds.setChecked(false);
     }
 
     @Override

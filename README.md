@@ -33,7 +33,7 @@ Date Picker | Time Picker
 The easiest way to add the Material DateTime Picker library to your project is by adding it as a dependency to your `build.gradle`
 ```java
 dependencies {
-  compile 'com.wdullaer:materialdatetimepicker:2.3.0'
+  compile 'com.wdullaer:materialdatetimepicker:2.5.0'
 }
 ```
 
@@ -138,6 +138,9 @@ Set the interval for selectable times in the TimePickerDialog. This is a conveni
 * `setSelectableDays(Calendar[] days)`  
 You can pass a `Calendar[]` to the `DatePickerDialog`. The values in this list are the only acceptable dates for the picker. It takes precedence over `setMinDate(Calendar day)` and `setMaxDate(Calendar day)`
 
+* `setDisabledDays(Calendar[] days)`  
+The values in this `Calendar[]` are explicitly disabled (not selectable). This option can be used together with `setSelectableDays(Calendar[] days)`: in case there is a clash `setDisabledDays(Calendar[] days)` will take precedence over `setSelectableDays(Calendar[] days)`
+
 * `setHighlightedDays(Calendar[] days)`  
 You can pass a `Calendar[]` of days to highlight. They will be rendered in bold. You can tweak the color of the highlighted days by overwriting `mdtp_date_picker_text_highlighted`
 
@@ -164,6 +167,8 @@ Set whether the picker dismisses itself when the parent Activity is paused or wh
 * `DatePickerDialog` `autoDismiss(boolean autoDismiss)`
 If set to `true` will dismiss the picker when the user selects a date. This defaults to `false`.
 
+* `TimepickerDialog` `enableSeconds(boolean enableSconds)` and `enableMinutes(boolean enableMinutes)`
+Allows you to enable or disable a seconds and minutes picker ont he `TimepickerDialog`. Enabling the seconds picker, implies enabling the minutes picker. Disabling the minute picker will disable the seconds picker. The last applied setting will be used. By default `enableSeconds = false` and `enableMinutes = true`.
 
 ## FAQ
 

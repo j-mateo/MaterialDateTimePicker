@@ -19,8 +19,10 @@
     <string name="title_date">Show a title</string>
     <string name="show_year_first">Show the year picker first</string>
     <string name="enable_seconds">Show seconds picker</string>
+    <string name="enable_minutes">Show minutes picker</string>
     <string name="limit_times">Limit selectable times</string>
     <string name="limit_dates">Limit selectable dates</string>
+    <string name="disable_dates">Disable specific dates</string>
     <string name="highlight_dates">Highlight certain dates</string>
     <string name="action_settings">Settings</string>
 
